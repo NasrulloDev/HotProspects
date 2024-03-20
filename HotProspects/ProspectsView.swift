@@ -14,8 +14,9 @@ struct ProspectsView: View {
         case none, contacted, uncontacted
     }
     
+    @State private var sortingOpt = false
     @Environment(\.modelContext) var modelContext
-    @Query(sort: \Prospect.name) var prospects: [Prospect]
+    @Query() var prospects: [Prospect]
     @State private var isShowingScanner = false
     @State private var selectedProspects = Set<Prospect>()
     
@@ -33,7 +34,7 @@ struct ProspectsView: View {
     }
     var body: some View {
         NavigationStack{
-            List(prospects, selection: $selectedProspects){ prospect in
+            List((sortingOpt ? prospects.sorted() : prospects), selection: $selectedProspects){ prospect in
                 HStack{
                     NavigationLink{
                         EditProspectView(prospect: prospect)
@@ -82,6 +83,11 @@ struct ProspectsView: View {
                 ToolbarItem(placement: .topBarTrailing){
                     Button("Scan", systemImage: "qrcode.viewfinder"){
                         isShowingScanner = true
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing){
+                    Button("Sort", systemImage: "list.bullet.indent"){
+                        sortingOpt.toggle()
                     }
                 }
                 
