@@ -35,13 +35,18 @@ struct ProspectsView: View {
         NavigationStack{
             List(prospects, selection: $selectedProspects){ prospect in
                 HStack{
-                    VStack(alignment: .leading) {
-                        Text(prospect.name)
-                            .font(.headline)
-                        
-                        Text(prospect.emailAddress)
-                            .foregroundStyle(.secondary)
+                    NavigationLink{
+                        EditProspectView(prospect: prospect)
+                    }label: {
+                        VStack(alignment: .leading) {
+                            Text(prospect.name)
+                                .font(.headline)
+                            
+                            Text(prospect.emailAddress)
+                                .foregroundStyle(.secondary)
+                        }
                     }
+                    
                     Spacer()
                     Spacer()
                     if filter == .none{
